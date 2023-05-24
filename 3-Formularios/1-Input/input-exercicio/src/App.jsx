@@ -8,18 +8,70 @@ import React from 'react';
 
 // Mostre uma mensagem na tela, caso a resposta da API seja positiva
 
+const formFields = [
+  {
+    id: 'nome',
+    label: 'Nome',
+    type: 'text',
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    type: 'email',
+  },
+  {
+    id: 'senha',
+    label: 'Senha',
+    type: 'password',
+  },
+  {
+    id: 'cep',
+    label: 'Cep',
+    type: 'text',
+  },
+  {
+    id: 'rua',
+    label: 'Rua',
+    type: 'text',
+  },
+  {
+    id: 'numero',
+    label: 'Numero',
+    type: 'text',
+  },
+  {
+    id: 'bairro',
+    label: 'Bairro',
+    type: 'text',
+  },
+  {
+    id: 'cidade',
+    label: 'Cidade',
+    type: 'text',
+  },
+  {
+    id: 'estado',
+    label: 'Estado',
+    type: 'text',
+  },
+];
+
 const App = () => {
-  const [nome, setNome] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [senha, setSenha] = React.useState('');
-  const [cep, setCep] = React.useState('');
-  const [rua, setRua] = React.useState('');
-  const [numero, setNumero] = React.useState('');
-  const [bairro, setBairro] = React.useState('');
-  const [cidade, setCidade] = React.useState('');
-  const [estado, setEstado] = React.useState('');
+  const [form, setForm] = React.useState(
+    formFields.reduce((acc, field) => {
+      return {
+        ...acc,
+        [field.id]: '',
+      };
+    }, {})
+  );
 
   const [response, setResponse] = React.useState(null);
+
+  function handleChange({ target }) {
+    const { id, value } = target;
+    setForm({ ...form, [id]: value });
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -29,40 +81,25 @@ const App = () => {
         'Content-Type': 'application/json',
       },
       // form é o objeto com os dados do formulário
-      body: JSON.stringify(nome, email, senha),
+      body: JSON.stringify(form),
     }).then(response => setResponse(response));
   }
-  console.log(response, nome)
 
   return (
-    <form id="form" onSubmit={handleSubmit}>
-      <label htmlFor="nome">Nome</label>
-      <input id="nome" type="text" name="nome" value={nome} onChange={({target}) => setNome(target.value)} />
+    <form onSubmit={handleSubmit}>
+      {formFields.map((field) => (
+        <div key={field.id}>
+          <label htmlFor={field.id}>{field.label}</label>
+          <input
+            id={field.id}
+            type={field.type}
+            value={form[field.id]}
+            onChange={handleChange}
+          />
+        </div>
+      ))}
 
-      <label htmlFor="email">Email</label>
-      <input id="email" type="email" name="email" value={email} onChange={({target}) => setEmail(target.value)} />
-
-      <label htmlFor="senha">Senha</label>
-      <input id="senha" type="password" name="senha" value={senha} onChange={({target}) => setSenha(target.value)} />
-
-      <label htmlFor="cep">CEP</label>
-      <input id="cep" type="text" name="cep" value={cep} onChange={({target}) => setCep(target.value)} />
-
-      <label htmlFor="rua">Rua</label>
-      <input id="rua" type="text" name="rua" value={rua} onChange={({target}) => setRua(target.value)} />
-
-      <label htmlFor="numero">Numero</label>
-      <input id="numero" type="text" name="numero" value={numero} onChange={({target}) => setNumero(target.value)} />
-
-      <label htmlFor="bairro">Bairro</label>
-      <input id="bairro" type="text" name="bairro" value={bairro} onChange={({target}) => setBairro(target.value)} />
-
-      <label htmlFor="cidade">Cidade</label>
-      <input id="cidade" type="text" name="cidade" value={cidade} onChange={({target}) => setCidade(target.value)} />
-
-      <label htmlFor="estado">Estado</label>
-      <input id="estado" type="text" name="estado" value={estado} onChange={({target}) => setEstado(target.value)} />
-      {response && response.ok && <p>formulário enviado</p> }
+        {response && response.ok && <p>Formulário enviado!</p> }
       <button>Enviar</button>
     </form>
   );
