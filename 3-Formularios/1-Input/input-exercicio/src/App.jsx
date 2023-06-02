@@ -68,6 +68,16 @@ const App = () => {
 
   const [response, setResponse] = React.useState(null);
 
+  React.useEffect(() => {
+    let timeOutId = null;
+    if (response && response.ok) {
+      timeOutId = setTimeout(() => {
+        setResponse(null);
+      }, 3000);
+    }   
+    return () => clearTimeout(timeOutId);
+  }, [response]);
+
   function handleChange({ target }) {
     const { id, value } = target;
     setForm({ ...form, [id]: value });
