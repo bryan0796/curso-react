@@ -19,7 +19,7 @@ const Radio = ({ pergunta, options, onChange, value, id, active }) => {
           key={option}
           style={{ marginBottom: '1rem', fontFamily: 'monospace' }}
         >
-          <input id={option} type="radio" value={option} 
+          <input id={id} type="radio" value={option} 
           checked={value === option} onChange={onChange}/>
           {option}
         </label>
