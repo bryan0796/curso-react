@@ -18,7 +18,7 @@ const Header = () => {
     <nav>
       <NavLink to='/' end activeStyle={activeStyle} element={<Home/>} >Home</NavLink>
       {' '}
-      <NavLink to='sobre' activeStyle={activeStyle} element={<Sobre/>} >Sobre</NavLink>
+      <NavLink to='sobre' activeStyle={{color: 'tomato'}} element={<Sobre/>} >Sobre</NavLink>
 
     </nav>
   )
